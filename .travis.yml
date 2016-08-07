@@ -1,0 +1,61 @@
+sudo: required
+dist: trusty
+language: ruby
+
+before_install:
+before_install:
+- gem install asciidoctor -v 1.5.2
+- gem install tilt
+- sudo pip install git+https://github.com/gitenberg-dev/gitberg
+- sudo pip install pillow
+- sudo pip install cssutils
+- sudo pip install docutils
+- sudo pip install roman
+- sudo pip install git+https://github.com/gitenberg-dev/pg-epubmaker
+script:
+- VERSION=`ruby -e "require 'yaml'; meta = YAML.load_file('metadata.yaml'); puts meta['_version'];"`
+- git clone https://github.com/gitenberg-dev/asciidoctor-htmlbook.git
+- sudo pip install -r asciidoctor-htmlbook/gitberg-machine/requirements.txt
+
+- /usr/bin/python -c "from gitenberg import travis; travis.build_epub()"
+- ebook-convert book.epub book.mobi
+- xvfb-run ebook-convert book.epub book.pdf
+branches:
+  only:
+  - master
+notifications:
+  webhooks:
+    urls:
+      - https://unglue.it/api/travisci/webhook
+    on_success: always
+    on_failure: never
+    on_start: never
+deploy:
+  skip_cleanup: true
+  provider: releases
+  api_key:
+    secure: cXYYFVLpXuw8Lu1YlkSMLULDj0YdPo48I+BI661FWukzjrrTuIgQ5/SliC5W0c9crodmC0dTlIjp6B6MnBkNPEWEpdBCjvwtl59LqcVI3Daj8K8aT7sxHvL4CnEPZEl7z6cHCSSFjs4bVgQuBpN36Iosw0uz25bVAayI9FHfrxeV1mZHfHu/e6oqVwms7U35yaCaTNy111X1UKzVx+SlVefFYf7tDssT5LPKxBQSsOgPBc1R2sNYI7W3xvazxJjLKKzdUSOTVHvMsHio5vCHcuhYokBsI7hoqtTokUKmIVFE3cRBeB9+/lNjhb9WFSujvtC8DQJ4hi40JMMgXkgViThhBA8/oZtk27ZUABIsGC7xhvDazl7R2ut1TiN9Nx7QB+iBTa92bm3+Q2lBiXGElKk/uNCti73ZaysIBDoaDNQZyC8QgtS2xfwJEeRJyA8SuffILzi9qUwD33lXRqd8hv5DU7yJaVE+SYv3M2rAxeBzhM2hVZEAJmiXwo9TJaOhM7WcCDRiauLFeAR0qCcBuJI7WCI4E6uF28/JkKI+zxRq197X/BAu9xIEOX6CONMwG0779Ceo3JfQSlyAtIE/9KplXzOtSsvz8o+fHYD5xhdmCx+fTuswj0nP1QoxQe4L2gC8T7cS6uOuuSL2epTlAsuwmZ5NcSPz1WwTahvOSQ8=
+  file:
+    - book.epub
+    - book.mobi
+    - book.pdf
+  "on":
+    repo: GITenberg/Democracy-and-Education--An-Introduction-to-the-Philosophy-of-Education_852
+addons:
+  apt:
+    packages:
+    - xsltproc
+    - xvfb
+    - calibre
+    - python-pip
+    - git
+    - python-dev
+    - libjpeg-dev
+    - libpng-dev
+    - libfreetype6
+    - libfreetype6-dev
+    - zlib1g-dev
+    - python-lxml
+    - libxml2-dev
+    - libxslt1-dev
+    - tidy
