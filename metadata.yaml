@@ -1,5 +1,8 @@
 _repo: Democracy-and-Education--An-Introduction-to-the-Philosophy-of-Education_852
-_version: 0.1.0
+_version: 0.2.0
+covers:
+- cover_type: generated
+  image_path: cover.png
 creator:
   author:
     agent_name: Dewey, John
@@ -9,6 +12,8 @@ creator:
     url: http://www.gutenberg.org/2009/agents/446
     wikipedia: http://en.wikipedia.org/wiki/John_Dewey
 description: ''
+edition_identifiers:
+  edition_id: http://www.gutenberg.org/ebooks/852#Democracy-and-Education--An-Introduction-to-the-Philosophy-of-Education
 gutenberg_bookshelf: Philosophy
 gutenberg_issued: '1997-03-01'
 gutenberg_type: Text
